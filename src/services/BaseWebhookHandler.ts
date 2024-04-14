@@ -1,6 +1,8 @@
 import VeriffAPI from '../services/VeriffAPI';
 import { getAccessToken, getFormDigestValue, uploadFileToSharepoint } from '../utils/sharepoint-utils';
 import { MediaItem } from '../types';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const { VERSION, BASE_URL, API_KEYS } = process.env;
 if (!API_KEYS) throw new Error('API keys not found');
