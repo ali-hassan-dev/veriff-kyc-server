@@ -36,7 +36,6 @@ app.post('/webhooks/decision', async (req: Request, res: Response) => {
 
   const handler = await DecisionEvents.new();
   await handler.handleWebhook(payload, res);
-  return res.status(200).send();
 });
 
 app.post('/webhooks/verification-event', async (req, res) => {
@@ -59,7 +58,6 @@ app.post('/webhooks/verification-event', async (req, res) => {
 
   const handler = await VerificationEvents.new();
   await handler.handleWebhook(payload, res);
-  return res.status(200).send();
 });
 
 app.post('/webhooks/proof-of-address', async (req, res) => {
@@ -81,7 +79,6 @@ app.post('/webhooks/proof-of-address', async (req, res) => {
   }
   const handler = await ProofOfAddress.new();
   await handler.handleWebhook(payload, res);
-  return res.status(200).send();
 });
 
 app.listen(port, () => {

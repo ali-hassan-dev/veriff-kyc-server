@@ -44,8 +44,8 @@ export const getRelavantSessionData = async (veriffApi: VeriffAPI, sessionId: st
 /**
  * Safely extracts the value from a settled promise result.
  * @param {PromiseSettledResult<any>} result - The settled promise result.
- * @returns {any} - The value if the promise is fulfilled, otherwise null.
+ * @returns {{ status: string, value: any }} - The settlement status, and the value if the promise is fulfilled, otherwise null.
  */
 export const extractValue = (result: PromiseSettledResult<any>) => {
-  return result.status === 'fulfilled' ? result.value : null;
+  return { status: result.status, value: result.status === 'fulfilled' ? result.value : null };
 }

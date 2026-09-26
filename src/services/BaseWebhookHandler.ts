@@ -21,7 +21,7 @@ class BaseWebhookHandler {
   }
 
   public static async new() {
-    let instance = Object.create(BaseWebhookHandler.prototype);
+    let instance = Object.create(this.prototype);
     await instance.init();
     return instance;
   }

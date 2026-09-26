@@ -243,10 +243,12 @@ class VeriffAPI {
       payload = Buffer.from(payload, 'utf8');
     }
 
+    const signatureBuffer = Buffer.from(signature, 'utf8');
     for (const apiKeyPair of this.apiKeyPairs) {
       const { sharedSecretKey } = apiKeyPair;
-      const digest = crypto.createHmac('sha256', sharedSecretKey).update(payload).digest('hex');
-      if (digest === signature) {
+      const digest = Buffer.from(crypto.createHmac('sha256', sharedSecretKey).update(payload).digest('hex'), 'utf8');
+      // timingSafeEqual throws on length mismatch, so check length first
+      if (digest.length === signatureBuffer.length && crypto.timingSafeEqual(digest, signatureBuffer)) {
         return true;
       }
     }

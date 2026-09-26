@@ -38,23 +38,22 @@ class DecisionEvents extends BaseWebhookHandler {
       ];
 
       await Promise.all(jsonUploadTasks.map(async ({ name, data }) => {
-        uploadObjectAsJSON(this.accessToken, this.formDigestValue, `${name}.json`, data.value, objectFilesPath);
+        return uploadObjectAsJSON(this.accessToken, this.formDigestValue, `${name}.json`, data.value, objectFilesPath);
       }));
 
-      if (!attempts.value)
-        return;
-
-      for (const attempt of attempts.value) {
-        // Create folder for this attempt
-        const { id } = attempt;
-        const folderPath = `${objectFilesPath}/${id}/DecisionEvent`;
-        await createFolderIfNotExistInSharepoint(`${objectFilesPath}/${id}`, this.accessToken, this.formDigestValue);
-        await createFolderIfNotExistInSharepoint(folderPath, this.accessToken, this.formDigestValue);
-        // Upload payload and relevant data fetched
-        const attemptMedia = await DecisionEvents.veriffAPI.getMediaForAttempt(id);
-        await this.uploadMediaFiles(attemptMedia.images, folderPath);
-        await this.uploadMediaFiles(attemptMedia.videos, folderPath);
-        console.log(`Media for Attempt ID ${id}: `, attemptMedia);
+      if (attempts.value) {
+        for (const attempt of attempts.value) {
+          // Create folder for this attempt
+          const { id } = attempt;
+          const folderPath = `${objectFilesPath}/${id}/DecisionEvent`;
+          await createFolderIfNotExistInSharepoint(`${objectFilesPath}/${id}`, this.accessToken, this.formDigestValue);
+          await createFolderIfNotExistInSharepoint(folderPath, this.accessToken, this.formDigestValue);
+          // Upload payload and relevant data fetched
+          const attemptMedia = await DecisionEvents.veriffAPI.getMediaForAttempt(id);
+          await this.uploadMediaFiles(attemptMedia.images, folderPath);
+          await this.uploadMediaFiles(attemptMedia.videos, folderPath);
+          console.log(`Media for Attempt ID ${id}: `, attemptMedia);
+        }
       }
       return res.status(200).json({ message: 'success' });
     } catch (error) {
