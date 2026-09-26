@@ -234,6 +234,11 @@ class VeriffAPI {
    * @returns {boolean} - Returns true if the signature is valid; otherwise, returns false.
    */
   public isSignatureValid({ signature, payload }: { signature: string, payload: any }) {
+    // body-parser leaves req.body undefined when the request is not JSON, so there is nothing to verify
+    if (payload === undefined) {
+      return false;
+    }
+
     if (typeof payload === 'object') {
       payload = JSON.stringify(payload);
     }

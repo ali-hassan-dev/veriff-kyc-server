@@ -5,7 +5,7 @@ import VeriffAPI from './services/VeriffAPI';
 import DecisionEvents from './services/DecisionEvents';
 import VerificationEvents from './services/VerificationEvents';
 import ProofOfAddress from './services/ProofOfAddress';
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -96,8 +96,8 @@ app.post('/webhooks/proof-of-address', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+// Express 5 passes startup errors (e.g. port already in use) to the listen callback
+app.listen(port, (error) => {
+  if (error) throw error;
   console.log(`Server is running on port ${port}`);
-}).on('error', (error) => {
-  throw new Error(error.message);
 });
