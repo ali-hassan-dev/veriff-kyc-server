@@ -1,7 +1,7 @@
 import axios, { isAxiosError } from 'axios';
 import querystring from 'querystring';
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const { TENANT_ID, CLIENT_ID, CLIENT_SECRET, RESOURCE, SITE_DOMAIN, SUBSITE } = process.env;
 

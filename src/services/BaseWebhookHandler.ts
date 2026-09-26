@@ -2,7 +2,7 @@ import VeriffAPI from '../services/VeriffAPI';
 import { getAccessToken, getFormDigestValue, uploadFileToSharepoint } from '../utils/sharepoint-utils';
 import { MediaItem } from '../types';
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const { VERSION, BASE_URL, API_KEYS } = process.env;
 if (!API_KEYS) throw new Error('API keys not found');
@@ -21,7 +21,7 @@ class BaseWebhookHandler {
   }
 
   public static async new() {
-    let instance = Object.create(BaseWebhookHandler.prototype);
+    let instance = Object.create(this.prototype);
     await instance.init();
     return instance;
   }

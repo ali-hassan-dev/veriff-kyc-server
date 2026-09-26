@@ -17,7 +17,7 @@ class VerificationEvents extends BaseWebhookHandler {
       if (personInfo?.value?.firstName)
         personName = `${personInfo.value.firstName} ${personInfo.value.lastName}`;
       else
-        return;
+        return res.status(200).send();
 
       // Create folders for session and attempts
       const personFolderPath = `KYC Details/${event}`;
@@ -35,23 +35,22 @@ class VerificationEvents extends BaseWebhookHandler {
       ];
 
       await Promise.all(jsonUploadTasks.map(async ({ name, data }) => {
-        uploadObjectAsJSON(this.accessToken, this.formDigestValue, `${name}.json`, data.value, objectFilesPath);
+        return uploadObjectAsJSON(this.accessToken, this.formDigestValue, `${name}.json`, data.value, objectFilesPath);
       }));
 
       // Upload media files for attempts
-      if (!attempts.value)
-        return;
+      if (attempts.value) {
+        for (const attempt of attempts.value) {
+          const { id } = attempt;
+          const folderPath = `${objectFilesPath}/${id}/VerificationEvent`;
+          await createFolderIfNotExistInSharepoint(`${objectFilesPath}/${id}`, this.accessToken, this.formDigestValue);
+          await createFolderIfNotExistInSharepoint(folderPath, this.accessToken, this.formDigestValue);
 
-      for (const attempt of attempts.value) {
-        const { id } = attempt;
-        const folderPath = `${objectFilesPath}/${id}/VerificationEvent`;
-        await createFolderIfNotExistInSharepoint(`${objectFilesPath}/${id}`, this.accessToken, this.formDigestValue);
-        await createFolderIfNotExistInSharepoint(folderPath, this.accessToken, this.formDigestValue);
-
-        const attemptMedia = await VerificationEvents.veriffAPI.getMediaForAttempt(id);
-        await this.uploadMediaFiles(attemptMedia.images, folderPath);
-        await this.uploadMediaFiles(attemptMedia.videos, folderPath);
-        console.log(`Media for Attempt ID ${id}: `, attemptMedia);
+          const attemptMedia = await VerificationEvents.veriffAPI.getMediaForAttempt(id);
+          await this.uploadMediaFiles(attemptMedia.images, folderPath);
+          await this.uploadMediaFiles(attemptMedia.videos, folderPath);
+          console.log(`Media for Attempt ID ${id}: `, attemptMedia);
+        }
       }
 
       return res.status(200).json({ message: 'success' });

@@ -67,19 +67,18 @@ class VeriffAPI {
         }
         return response.data;
       } catch (error) {
+        // Every failure uses up an attempt, including network errors that have no response
+        attemptsLeft--;
         if (isAxiosError(error) && error.response && error.response.status && error.response.data) {
           this.switchToNextKeyPair();
-          attemptsLeft--;
           console.error(`Request to Veriff API failed with status: ${error.response.status} and error message: ${JSON.stringify(error.response.data)}`);
-          if (attemptsLeft === 0) {
-            console.error(`All key pairs failed for ${url}`);
-            return null;
-          }
         } else {
           console.error(`Request failed for ${url}:`, error);
         }
       }
     }
+    console.error(`All attempts failed for ${url}`);
+    return null;
   }
 
   /**
@@ -235,6 +234,11 @@ class VeriffAPI {
    * @returns {boolean} - Returns true if the signature is valid; otherwise, returns false.
    */
   public isSignatureValid({ signature, payload }: { signature: string, payload: any }) {
+    // body-parser leaves req.body undefined when the request is not JSON, so there is nothing to verify
+    if (payload === undefined) {
+      return false;
+    }
+
     if (typeof payload === 'object') {
       payload = JSON.stringify(payload);
     }
@@ -243,10 +247,12 @@ class VeriffAPI {
       payload = Buffer.from(payload, 'utf8');
     }
 
+    const signatureBuffer = Buffer.from(signature, 'utf8');
     for (const apiKeyPair of this.apiKeyPairs) {
       const { sharedSecretKey } = apiKeyPair;
-      const digest = crypto.createHmac('sha256', sharedSecretKey).update(payload).digest('hex');
-      if (digest === signature) {
+      const digest = Buffer.from(crypto.createHmac('sha256', sharedSecretKey).update(payload).digest('hex'), 'utf8');
+      // timingSafeEqual throws on length mismatch, so check length first
+      if (digest.length === signatureBuffer.length && crypto.timingSafeEqual(digest, signatureBuffer)) {
         return true;
       }
     }
