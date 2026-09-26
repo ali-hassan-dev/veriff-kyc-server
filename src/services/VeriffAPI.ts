@@ -67,19 +67,18 @@ class VeriffAPI {
         }
         return response.data;
       } catch (error) {
+        // Every failure uses up an attempt, including network errors that have no response
+        attemptsLeft--;
         if (isAxiosError(error) && error.response && error.response.status && error.response.data) {
           this.switchToNextKeyPair();
-          attemptsLeft--;
           console.error(`Request to Veriff API failed with status: ${error.response.status} and error message: ${JSON.stringify(error.response.data)}`);
-          if (attemptsLeft === 0) {
-            console.error(`All key pairs failed for ${url}`);
-            return null;
-          }
         } else {
           console.error(`Request failed for ${url}:`, error);
         }
       }
     }
+    console.error(`All attempts failed for ${url}`);
+    return null;
   }
 
   /**

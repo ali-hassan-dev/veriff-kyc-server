@@ -34,8 +34,13 @@ app.post('/webhooks/decision', async (req: Request, res: Response) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const handler = await DecisionEvents.new();
-  await handler.handleWebhook(payload, res);
+  try {
+    const handler = await DecisionEvents.new();
+    await handler.handleWebhook(payload, res);
+  } catch (error) {
+    console.error('Error setting up decision webhook handler:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 app.post('/webhooks/verification-event', async (req, res) => {
@@ -56,8 +61,13 @@ app.post('/webhooks/verification-event', async (req, res) => {
     return res.status(401).json({ error: 'Invalid signature' });
   }
 
-  const handler = await VerificationEvents.new();
-  await handler.handleWebhook(payload, res);
+  try {
+    const handler = await VerificationEvents.new();
+    await handler.handleWebhook(payload, res);
+  } catch (error) {
+    console.error('Error setting up verification event webhook handler:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 app.post('/webhooks/proof-of-address', async (req, res) => {
@@ -77,8 +87,13 @@ app.post('/webhooks/proof-of-address', async (req, res) => {
   if (!isValid) {
     return res.status(401).json({ error: 'Invalid signature' });
   }
-  const handler = await ProofOfAddress.new();
-  await handler.handleWebhook(payload, res);
+  try {
+    const handler = await ProofOfAddress.new();
+    await handler.handleWebhook(payload, res);
+  } catch (error) {
+    console.error('Error setting up proof of address webhook handler:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 app.listen(port, () => {
