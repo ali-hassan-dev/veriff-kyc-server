@@ -1,5 +1,7 @@
 # Veriff KYC Server
 
+[![Tests](https://github.com/ali-hassan-dev/veriff-kyc-server/actions/workflows/tests.yml/badge.svg)](https://github.com/ali-hassan-dev/veriff-kyc-server/actions/workflows/tests.yml)
+
 Automated KYC pipeline: signed Veriff webhooks in, every identity check filed into SharePoint with no one touching it.
 
 ![Architecture](docs/architecture.png)
@@ -84,11 +86,20 @@ npm run build
 npm start               # or: npm run dev
 ```
 
+## Tests
+
+```bash
+npm test
+```
+
+The [Vitest](https://vitest.dev) suite in `test/` covers signature checks on all three webhooks, key failover, the parallel session fetch and the SharePoint folder layout. Veriff and SharePoint are mocked, so it needs no `.env`, no keys and no network. CI builds and tests every push and pull request on Node 20 and 22.
+
 ## Project structure
 
 ```
 src/
-├─ app.ts                        Express server and the three webhook routes
+├─ app.ts                        Express app and the three webhook routes
+├─ server.ts                     Entry point: starts the HTTP server
 ├─ services/
 │  ├─ VeriffAPI.ts               Veriff client: request signing, key failover, signature checks
 │  ├─ BaseWebhookHandler.ts      Shared SharePoint auth and media upload
