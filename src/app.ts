@@ -8,7 +8,6 @@ import ProofOfAddress from './services/ProofOfAddress';
 dotenv.config({ quiet: true });
 
 const app = express();
-const port = process.env.PORT || 3000;
 const { VERSION, BASE_URL, API_KEYS } = process.env;
 if (!API_KEYS) throw new Error('API keys not found');
 if (!BASE_URL) throw new Error('API version not found');
@@ -96,8 +95,4 @@ app.post('/webhooks/proof-of-address', async (req, res) => {
   }
 });
 
-// Express 5 passes startup errors (e.g. port already in use) to the listen callback
-app.listen(port, (error) => {
-  if (error) throw error;
-  console.log(`Server is running on port ${port}`);
-});
+export default app;

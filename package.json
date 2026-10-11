@@ -2,12 +2,12 @@
   "name": "veriff-kyc-server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.ts",
+  "main": "src/server.ts",
   "private": true,
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js",
-    "dev": "nodemon --exec tsx src/app.ts",
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec tsx src/server.ts",
     "test": "vitest run"
   },
   "keywords": [],

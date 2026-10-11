@@ -88,7 +88,8 @@ npm start               # or: npm run dev
 
 ```
 src/
-├─ app.ts                        Express server and the three webhook routes
+├─ app.ts                        Express app and the three webhook routes
+├─ server.ts                     Entry point: starts the HTTP server
 ├─ services/
 │  ├─ VeriffAPI.ts               Veriff client: request signing, key failover, signature checks
 │  ├─ BaseWebhookHandler.ts      Shared SharePoint auth and media upload
