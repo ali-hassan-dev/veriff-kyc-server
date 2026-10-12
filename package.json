@@ -1,7 +1,7 @@
 {
   "name": "veriff-kyc-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automated KYC pipeline: signed Veriff webhooks in, every identity check filed into SharePoint.",
   "main": "src/server.ts",
   "private": true,
   "scripts": {
@@ -9,6 +9,9 @@
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "keywords": [],
   "author": "",
