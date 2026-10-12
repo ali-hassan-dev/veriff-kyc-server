@@ -77,6 +77,8 @@ Copy `.env.example` to `.env` and fill in:
 
 ## Getting started
 
+You need Node.js 22 or newer.
+
 ```bash
 git clone https://github.com/ali-hassan-dev/veriff-kyc-server.git
 cd veriff-kyc-server
