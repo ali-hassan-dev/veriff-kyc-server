@@ -92,7 +92,7 @@ npm start               # or: npm run dev
 npm test
 ```
 
-The [Vitest](https://vitest.dev) suite in `test/` covers signature checks on all three webhooks, key failover, the parallel session fetch and the SharePoint folder layout. Veriff and SharePoint are mocked, so it needs no `.env`, no keys and no network. CI builds and tests every push and pull request on Node 20 and 22.
+The [Vitest](https://vitest.dev) suite in `test/` covers signature checks on all three webhooks, key failover, the parallel session fetch and the SharePoint folder layout. Veriff and SharePoint are mocked, so it needs no `.env`, no keys and no network. CI builds and tests every push and pull request on Node 22 and 24.
 
 ## Project structure
 
