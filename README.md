@@ -94,7 +94,7 @@ npm start               # or: npm run dev
 npm test
 ```
 
-The [Vitest](https://vitest.dev) suite in `test/` covers signature checks on all three webhooks, key failover, the parallel session fetch and the SharePoint folder layout. Veriff and SharePoint are mocked, so it needs no `.env`, no keys and no network. CI builds and tests every push and pull request on Node 22 and 24.
+The 40+ [Vitest](https://vitest.dev) tests in `test/` cover signature checks on all three webhooks, key failover, the parallel session fetch and the SharePoint folder layout. Veriff and SharePoint are mocked, so it needs no `.env`, no keys and no network. CI builds and tests every push and pull request on Node 22 and 24.
 
 ## Project structure
 
@@ -113,6 +113,10 @@ src/
 │  └─ sharepoint-utils.ts        SharePoint REST helpers: auth, folders, uploads
 └─ types/index.ts
 ```
+
+## About me
+
+I'm Ali Hassan, a full-stack engineer working with Node.js, TypeScript, React, Next.js, and Laravel. See more of my work on my [portfolio](https://ali-hassan-dev.netlify.app/upwork), or [work with me on Upwork](https://www.upwork.com/freelancers/~0110268fa5a62812e0).
 
 ## License
 
